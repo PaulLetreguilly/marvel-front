@@ -1,1 +1,31 @@
 /* Other rules */
+* {
+  object-fit: cover;
+}
+
+/* HEADER */
+header {
+  width: 100%;
+  background-color: black;
+}
+.logo {
+  width: 300px;
+  margin: 5px 20px;
+}
+
+/* MAIN PAGE */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: black;
+}
+.char {
+  margin: 5px 10px;
+  width: 200px;
+  height: 200px;
+  background-color: white;
+}
+.char:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
