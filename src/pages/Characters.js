@@ -30,10 +30,14 @@ const Characters = () => {
         {data.results.map((item, index) => {
           // console.log(item._id);
           return (
-            <Link to={`/comics/${item._id}`} state={{ comics: item.comics }}>
+            <Link to={`/comics/${item._id}`}>
               <div key={index} className="char">
-                <div>{item.name}</div>
-                {/* <img src={item.thumbnail.path} alt="" /> */}
+                <h3>{item.name}</h3>
+                <img
+                  src={item.thumbnail.path + "." + item.thumbnail.extension}
+                  alt=""
+                />
+                <p>{item.description}</p>
               </div>
             </Link>
           );
