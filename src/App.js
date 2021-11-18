@@ -40,7 +40,17 @@ function App() {
             />
           }
         />
-        <Route path="/comics" element={<Comics />} />
+        <Route
+          path="/comics"
+          element={
+            <Comics
+              token={token}
+              library={library}
+              faStar={faStar}
+              faHeart={faHeart}
+            />
+          }
+        />
         <Route path="/comics/:id" element={<Character />} />
         <Route path="/favorite" element={<Favorite token={token} />} />
         <Route

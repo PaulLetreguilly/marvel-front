@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Comics = () => {
+const Comics = ({ token, library, faStar, faHeart }) => {
   const [data, setData] = useState();
   const [comics, setComics] = useState("");
   const [page, setPage] = useState(1);
@@ -29,6 +30,38 @@ const Comics = () => {
     };
     fetchData();
   }, [comics, page, limit]);
+
+  const registerFav = async (favorite) => {
+    try {
+      // console.log(token);
+      // favorite.AccountToken = token;
+      // console.log(FavChar);
+      const resp = await axios.post(
+        "http://localhost:4000/favorite/comic",
+        {
+          favorite,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(resp.data);
+      // console.log("this was registered ===>", resp.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const handleFavorite = (item) => {
+    if (token) {
+      registerFav(item);
+    } else {
+      alert("veuillez-vous connecter pour enregistrer des favoris");
+    }
+    // console.log(item._id);
+  };
 
   const maxPage = Math.round(data?.count / limit);
   //   console.log(maxPage);
@@ -62,6 +95,14 @@ const Comics = () => {
           <button onClick={handleMinus}>-</button>page {page}
           <button onClick={handlePlus}>+</button>
         </span>
+        <span style={{ color: "red" }}>
+          Combien d'articles voulez-vous afficher ?{" "}
+          <input
+            type="number"
+            placeholder="100"
+            onChange={(event) => setLimit(event.target.value)}
+          />
+        </span>
       </div>
       <div className="container">
         {data?.results.map((item) => {
@@ -73,6 +114,11 @@ const Comics = () => {
                 alt=""
               />
               <p>{item.description}</p>
+              <FontAwesomeIcon
+                icon="heart"
+                className="iconHeart"
+                onClick={() => handleFavorite(item)}
+              />
             </div>
           );
         })}

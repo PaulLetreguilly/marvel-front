@@ -85,7 +85,7 @@ header {
 .char > div {
   position: relative;
 }
-.iconStar {
+.char .iconStar {
   color: yellow;
   background-color: lightblue;
   padding: 10px 10px;
@@ -127,6 +127,7 @@ header {
 .contain-comics {
   background-color: black;
   margin: 20px 50px;
+  position: relative;
 }
 .contain-comics img {
   width: 450px;
@@ -142,6 +143,21 @@ header {
 .contain-comics p {
   width: 450px;
   font-style: italic;
+}
+.contain-comics .iconHeart {
+  color: red;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 20px;
+  /* border: 1px solid gold; */
+  background-color: white;
+  border-radius: 50%;
+  padding: 5px 5px;
+}
+.contain-comics .iconHeart:hover {
+  cursor: pointer;
+  opacity: 0.8;
 }
 
 /*************** CONNECT PAGES ***************/
@@ -181,4 +197,30 @@ header {
 .fav-charac img {
   width: 250px;
   height: 340px;
+}
+.favorites {
+  position: relative;
+}
+.fav-delete {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 2px 2px;
+}
+.fav-delete:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+.choice {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.choice span {
+  margin: 40px 30px;
+  font-size: 24px;
+  border: 1px solide black;
+}
+.choice span:hover {
+  cursor: pointer;
 }

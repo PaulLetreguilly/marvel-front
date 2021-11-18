@@ -47,7 +47,7 @@ const Characters = ({ library, faStar, faHeart, token }) => {
       // favorite.AccountToken = token;
       // console.log(FavChar);
       const resp = await axios.post(
-        "http://localhost:4000/favorite/create",
+        "http://localhost:4000/favorite/character",
         {
           favorite,
         },
@@ -105,6 +105,14 @@ const Characters = ({ library, faStar, faHeart, token }) => {
         <span style={{ color: "red" }}>
           <button onClick={handleMinus}>-</button>page {page}
           <button onClick={handlePlus}>+</button>
+        </span>
+        <span style={{ color: "red" }}>
+          Combien d'articles voulez-vous afficher ?{" "}
+          <input
+            type="number"
+            placeholder="100"
+            onChange={(event) => setLimit(event.target.value)}
+          />
         </span>
       </div>
       <main className="container">
