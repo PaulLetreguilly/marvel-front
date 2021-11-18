@@ -1,9 +1,9 @@
-/* Other rules */
+/*************** Other rules ***************/
 * {
   object-fit: cover;
 }
 
-/* HEADER */
+/*************** HEADER ***************/
 header {
   width: 100%;
   background-color: black;
@@ -18,13 +18,6 @@ header {
 .header-left {
   display: flex;
   align-items: center;
-}
-.searchBar {
-  width: 350px;
-  padding: 10px 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: gold;
 }
 
 /* right-header */
@@ -44,17 +37,30 @@ header {
   margin: 5px 20px;
 }
 
-/* MAIN PAGE */
+/************** MAIN PAGE **************/
+.body {
+  background-color: black;
+  width: 100%;
+}
+/* search engine */
+
+.searchBar {
+  width: 500px;
+  padding: 15px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: gold;
+  margin: 40px 20px;
+}
+/* ------------- */
 .container {
   display: flex;
   flex-wrap: wrap;
-  background-color: black;
 }
 .char {
   margin: 5px 35px;
   width: 400px;
-  /* height: 200px; */
-  /* background-color: white; */
+  /* position: relative; */
 }
 .char p,
 .char h3 {
@@ -75,7 +81,24 @@ header {
   font-style: italic;
 }
 
-/* COMIC BY CHAR PAGE */
+/* favorite in main page */
+.char > div {
+  position: relative;
+}
+.iconStar {
+  color: yellow;
+  background-color: lightblue;
+  padding: 10px 10px;
+  border-radius: 50%;
+  position: absolute;
+  top: -50px;
+  right: 30px;
+}
+.iconStar:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+/*************** COMIC BY CHAR PAGE ***************/
 
 .charac-comics {
   display: flex;
@@ -95,9 +118,14 @@ header {
   width: 500px;
   height: 700px;
 }
-/* COMICS PAGE */
+
+/*************** COMICS PAGE ***************/
+
+.body-comics {
+  background-color: silver;
+}
 .contain-comics {
-  /* background-color: white; */
+  background-color: black;
   margin: 20px 50px;
 }
 .contain-comics img {
@@ -114,4 +142,43 @@ header {
 .contain-comics p {
   width: 450px;
   font-style: italic;
+}
+
+/*************** CONNECT PAGES ***************/
+
+.form {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.form input {
+  margin: 5px 5px;
+}
+.wrong {
+  border-color: red;
+}
+.wrongmessage {
+  color: red;
+}
+
+/*************** FAVORITE PAGE ***************/
+
+.fav-charac {
+  display: flex;
+  flex-wrap: wrap;
+  /* margin: 0 20px; */
+}
+.yourFavorites {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.fav-charac div {
+  margin: 0 20px;
+}
+.fav-charac img {
+  width: 250px;
+  height: 340px;
 }

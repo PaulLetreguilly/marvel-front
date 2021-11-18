@@ -13,13 +13,13 @@ const Character = () => {
         // const resp = await axios.get(`http://localhost:4000/comics`);
         const resp = await axios.get(`http://localhost:4000/comics/${id}`);
         setData(resp.data);
-        console.log(resp.data, "heya");
+        // console.log(resp.data, "heya");
       } catch (error) {
         console.log(error.message);
       }
     };
     fetchData();
-  }, []);
+  }, [id]);
 
   return (
     <section className="charac-comics">
