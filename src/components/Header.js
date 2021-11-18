@@ -7,17 +7,11 @@ const Header = ({ token, setUser }) => {
       <div className="header-left">
         <Link to="/">
           <img
-            src="https://www.thegeekgeneration.com/wp-content/uploads/2009/12/thumbnail-marvel-character-logo.jpg"
+            src="https://lereacteur-marvel-api.netlify.app/static/media/logo.ad6c786b.svg"
             alt="marvel logo"
             className="logo"
           />
         </Link>
-        {/* <input
-          type="text"
-          className="searchBar"
-          placeholder="Recherche"
-          onChange={handleCharacters}
-        /> */}
       </div>
       <div className="header-right">
         <div>

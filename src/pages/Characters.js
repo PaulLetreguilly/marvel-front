@@ -9,6 +9,8 @@ const Characters = ({ library, faStar, faHeart, token }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [characters, setCharacters] = useState("");
+  const [suggest, setSuggest] = useState([]);
+
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(100);
 
@@ -28,8 +30,6 @@ const Characters = ({ library, faStar, faHeart, token }) => {
           params: params,
         });
         setData(response.data);
-
-        // console.log(response.data);
         setIsLoading(false);
       };
       fetchData();
@@ -41,11 +41,6 @@ const Characters = ({ library, faStar, faHeart, token }) => {
 
   const registerFav = async (favorite) => {
     try {
-      // console.log(fav);
-      // console.log("ahah");
-      // console.log(token);
-      // favorite.AccountToken = token;
-      // console.log(FavChar);
       const resp = await axios.post(
         "http://localhost:4000/favorite/character",
         {
@@ -58,17 +53,27 @@ const Characters = ({ library, faStar, faHeart, token }) => {
         }
       );
       console.log(resp.data);
-      // console.log("this was registered ===>", resp.data);
     } catch (error) {
       console.log(error.message);
     }
   };
 
   const maxPage = Math.round(data?.count / limit);
-  // console.log(maxPage);
 
-  const handleCharacters = (event) => {
-    setCharacters(event.target.value);
+  const handleSuggestion = (text) => {
+    setCharacters(text);
+  };
+
+  const handleCharacters = (text) => {
+    let matches = [];
+    if (text.length > 0) {
+      matches = data.results.filter((heroes) => {
+        const regex = new RegExp(`${text}`, "gi");
+        return heroes.name.match(regex);
+      });
+    }
+    setSuggest(matches);
+    setCharacters(text);
   };
 
   const handleMinus = () => {
@@ -99,8 +104,40 @@ const Characters = ({ library, faStar, faHeart, token }) => {
           type="text"
           className="searchBar"
           placeholder="Recherche de personnage..."
-          onChange={handleCharacters}
+          onChange={(event) => handleCharacters(event.target.value)}
+          value={characters}
+          onBlur={() => {
+            setTimeout(() => {
+              setSuggest([]);
+            }, 200);
+          }}
         />
+        <div className="suggestions contain-search">
+          {suggest &&
+            suggest.map((suggestion, i) => {
+              return (
+                <div
+                  key={i}
+                  className="suggestion"
+                  onClick={() => handleSuggestion(suggestion.name)}
+                >
+                  {suggestion.name}
+                </div>
+              );
+            })}
+        </div>
+        {/* {suggest &&
+          suggest.map((suggestion, i) => {
+            return (
+              <div
+                key={i}
+                className="suggestion"
+                onClick={() => handleSuggestion(suggestion.name)}
+              >
+                {suggestion.name}
+              </div>
+            );
+          })} */}
         <span style={{ color: "red" }}>{data?.count} personnages trouvés</span>
         <span style={{ color: "red" }}>
           <button onClick={handleMinus}>-</button>page {page}
@@ -116,7 +153,7 @@ const Characters = ({ library, faStar, faHeart, token }) => {
         </span>
       </div>
       <main className="container">
-        {data.results.map((item) => {
+        {data?.results.map((item) => {
           return (
             // <Link to={`/comics/${item._id}`}>
             <div

@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Comics = ({ token, library, faStar, faHeart }) => {
   const [data, setData] = useState();
   const [comics, setComics] = useState("");
+  const [suggest, setSuggest] = useState([]);
+
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(100);
 
@@ -23,7 +25,6 @@ const Comics = ({ token, library, faStar, faHeart }) => {
           params: params,
         });
         setData(resp.data);
-        // console.log(resp.data, "heya");
       } catch (error) {
         console.log(error.message);
       }
@@ -33,9 +34,6 @@ const Comics = ({ token, library, faStar, faHeart }) => {
 
   const registerFav = async (favorite) => {
     try {
-      // console.log(token);
-      // favorite.AccountToken = token;
-      // console.log(FavChar);
       const resp = await axios.post(
         "http://localhost:4000/favorite/comic",
         {
@@ -53,6 +51,9 @@ const Comics = ({ token, library, faStar, faHeart }) => {
       console.log(error.message);
     }
   };
+  const handleSuggestion = (text) => {
+    setComics(text);
+  };
 
   const handleFavorite = (item) => {
     if (token) {
@@ -66,8 +67,16 @@ const Comics = ({ token, library, faStar, faHeart }) => {
   const maxPage = Math.round(data?.count / limit);
   //   console.log(maxPage);
 
-  const handleComics = (event) => {
-    setComics(event.target.value);
+  const handleComics = (text) => {
+    let matches = [];
+    if (text.length > 0) {
+      matches = data.results.filter((comics) => {
+        const regex = new RegExp(`${text}`, "gi");
+        return comics.title.match(regex);
+      });
+    }
+    setSuggest(matches);
+    setComics(text);
   };
 
   const handleMinus = () => {
@@ -88,8 +97,28 @@ const Comics = ({ token, library, faStar, faHeart }) => {
           type="text"
           className="searchBar"
           placeholder="Recherche de comics..."
-          onChange={handleComics}
+          onChange={(event) => handleComics(event.target.value)}
+          onBlur={() => {
+            setTimeout(() => {
+              setSuggest([]);
+            }, 200);
+          }}
+          value={comics}
         />
+        <div className="suggestions contain-search">
+          {suggest &&
+            suggest.map((suggestion, i) => {
+              return (
+                <div
+                  key={i}
+                  className="suggestion"
+                  onClick={() => handleSuggestion(suggestion.title)}
+                >
+                  {suggestion.title}
+                </div>
+              );
+            })}
+        </div>
         <span style={{ color: "red" }}>{data?.count} comics trouvés</span>
         <span>
           <button onClick={handleMinus}>-</button>page {page}

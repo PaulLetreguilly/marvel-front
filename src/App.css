@@ -33,8 +33,9 @@ header {
   cursor: pointer;
 }
 .logo {
-  width: 400px;
+  width: 150px;
   margin: 5px 20px;
+  border-radius: 7px;
 }
 
 /************** MAIN PAGE **************/
@@ -43,15 +44,42 @@ header {
   width: 100%;
 }
 /* search engine */
-
+.search {
+  /* position: relative; */
+}
 .searchBar {
   width: 500px;
   padding: 15px 10px;
   border: none;
-  border-radius: 5px;
+  /* border-radius: 5px; */
   background-color: gold;
-  margin: 40px 20px;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
+.contain-search {
+  overflow: scroll;
+  width: 500px;
+  height: 100px;
+  /* background-color: white; */
+}
+.suggestions {
+  width: 520px;
+  margin: 0 20px;
+}
+.suggestion {
+  padding: 5px 10px;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  background-color: gold;
+}
+.suggestion:hover {
+  cursor: pointer;
+  opacity: 0.9;
+  background-color: gray;
+}
+
 /* ------------- */
 .container {
   display: flex;
@@ -128,6 +156,7 @@ header {
   background-color: black;
   margin: 20px 50px;
   position: relative;
+  width: 450px;
 }
 .contain-comics img {
   width: 450px;
