@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router";
 // import { useState } from "react";
 
 const Header = ({ token, setUser }) => {
+  const navigate = useNavigate();
+
   return (
     <header>
       <div className="header-left">
@@ -13,34 +16,30 @@ const Header = ({ token, setUser }) => {
           />
         </Link>
       </div>
+      <div className="header-mid">
+        <span onClick={() => navigate("/")}>Personnages</span>
+
+        <span onClick={() => navigate("/comics")}>Comics</span>
+
+        <span onClick={() => navigate("/favorite")}>Favoris</span>
+      </div>
       <div className="header-right">
-        <div>
-          <Link to="/">
-            <button>Personnages</button>
-          </Link>
-          <Link to="/comics">
-            <button>Comics</button>
-          </Link>
-          <Link to="/favorite">
-            <button>Favoris</button>
-          </Link>
-        </div>
         {token ? (
-          <div
-            onClick={() => {
-              setUser(null);
-            }}
-          >
-            <button>Déconnexion</button>
+          <div>
+            <span
+              className="wrongmessage"
+              onClick={() => {
+                setUser(null);
+              }}
+            >
+              Déconnexion
+            </span>
           </div>
         ) : (
-          <div>
-            <Link to="/signup">
-              <button>S'inscrire</button>
-            </Link>
-            <Link to="/login">
-              <button>connexion</button>
-            </Link>
+          <div className="log-buttons">
+            <span onClick={() => navigate("/signup")}>S'inscrire</span>
+
+            <span onClick={() => navigate("/login")}>connexion</span>
           </div>
         )}
       </div>

@@ -40,7 +40,7 @@ const Favorite = ({ token }) => {
       }
     };
     fetchFav();
-  }, [refresh, character]);
+  }, [refresh, character, token]);
 
   const FavDelete = async (idToDelete) => {
     try {
@@ -49,6 +49,18 @@ const Favorite = ({ token }) => {
         { id: idToDelete }
       );
       setRefresh(!refresh);
+      console.log(response.data);
+    } catch (error) {
+      console.log();
+    }
+  };
+  const ComicDelete = async (idToDelete) => {
+    try {
+      const response = await axios.post("http://localhost:4000/comic/delete", {
+        id: idToDelete,
+      });
+      setRefresh(!refresh);
+      console.log(response.data);
     } catch (error) {
       console.log();
     }
@@ -94,7 +106,7 @@ const Favorite = ({ token }) => {
         {data?.map((elem) => {
           return (
             <div key={elem._id} className="favorites">
-              <div>{elem.favorite.name}</div>
+              <div>{elem.favorite.title}</div>
 
               <img
                 src={
@@ -104,7 +116,10 @@ const Favorite = ({ token }) => {
                 }
                 alt=""
               />
-              <span className="fav-delete" onClick={() => FavDelete(elem._id)}>
+              <span
+                className="fav-delete"
+                onClick={() => ComicDelete(elem._id)}
+              >
                 X
               </span>
             </div>

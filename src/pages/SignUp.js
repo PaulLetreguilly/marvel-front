@@ -3,12 +3,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 
 const LogIn = ({ setUser, token }) => {
-  const [signUp, setSignUp] = useState(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [wrongPassword, setWrongPassword] = useState(false);
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -21,6 +21,7 @@ const LogIn = ({ setUser, token }) => {
           email: email,
           password: password,
         });
+        setWrongPassword(false);
         // console.log(response.data);
         if (response.data?.token) {
           setUser(response.data.token);
@@ -29,7 +30,13 @@ const LogIn = ({ setUser, token }) => {
       } else {
         setWrongPassword(true);
       }
-    } catch (error) {}
+    } catch (error) {
+      //   console.log(error.message);
+      //   console.log(error.response);
+      if (error.response?.status === 409) {
+        setError("Cet email n'est pas disponible");
+      }
+    }
   };
 
   const handleUsername = (event) => {
@@ -47,15 +54,19 @@ const LogIn = ({ setUser, token }) => {
     setConfirmPassword(event.target.value);
   };
 
-  return signUp ? (
-    <div>S'inscrire</div>
-  ) : (
+  return (
     <main>
-      <div>S'inscrire (On progress ...)</div>
+      {/* <div>S'inscrire (On progress ...)</div> */}
       <form className="form sign" onSubmit={handleSubmit}>
         <h3>Se connecter</h3>
         <input type="text" placeholder="username" onChange={handleUsername} />
-        <input type="email" placeholder="email" onChange={handleMail} />
+        <input
+          type="email"
+          placeholder="email"
+          onChange={handleMail}
+          className={error ? "wrongmessage" : null}
+        />
+        <div className="error">{error}</div>
         <input
           className={wrongPassword ? "wrong" : "norm"}
           type="password"

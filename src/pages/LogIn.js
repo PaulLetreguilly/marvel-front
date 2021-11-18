@@ -3,9 +3,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 
 const LogIn = ({ setUser, token }) => {
-  const [login, setLogin] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -22,7 +22,11 @@ const LogIn = ({ setUser, token }) => {
         navigate("/");
       }
     } catch (error) {
-      console.log(error.message);
+      // console.log(error.message);
+      // console.log(error.response);
+      if (error.response?.status === 401) {
+        setError("Mauvais email/mot de passe");
+      }
     }
   };
 
@@ -34,19 +38,23 @@ const LogIn = ({ setUser, token }) => {
     setPassword(event.target.value);
   };
 
-  return login ? (
-    <div>S'inscrire</div>
-  ) : (
+  return (
     <main>
-      <div>Se connecter (On progress ...)</div>
       <form className="form log" onSubmit={handleSubmit}>
         <h3>Se connecter</h3>
-        <input type="email" placeholder="email" onChange={handleMail} />
         <input
+          className={error ? "red" : null}
+          type="email"
+          placeholder="email"
+          onChange={handleMail}
+        />
+        <input
+          className={error ? "red" : null}
           type="password"
           placeholder="password"
           onChange={handlePassword}
         />
+        <div className="error">{error}</div>
         <input type="submit" />
       </form>
     </main>

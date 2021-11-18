@@ -126,18 +126,6 @@ const Characters = ({ library, faStar, faHeart, token }) => {
               );
             })}
         </div>
-        {/* {suggest &&
-          suggest.map((suggestion, i) => {
-            return (
-              <div
-                key={i}
-                className="suggestion"
-                onClick={() => handleSuggestion(suggestion.name)}
-              >
-                {suggestion.name}
-              </div>
-            );
-          })} */}
         <span style={{ color: "red" }}>{data?.count} personnages trouvés</span>
         <span style={{ color: "red" }}>
           <button onClick={handleMinus}>-</button>page {page}
