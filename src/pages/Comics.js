@@ -63,6 +63,7 @@ const Comics = ({ token, library, faStar, faHeart }) => {
   const handleFavorite = (item) => {
     if (token) {
       registerFav(item);
+      alert("Comics enregistré en favori !");
     } else {
       alert("veuillez-vous connecter pour enregistrer des favoris");
       setTimeout(() => {

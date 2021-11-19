@@ -91,9 +91,10 @@ const Characters = ({ library, faStar, faHeart, token }) => {
   };
   const handleFavorite = (item) => {
     if (token) {
-      item.liked = true;
+      // item.liked = true;
       registerFav(item);
-      setRefresh(!refresh);
+      // setRefresh(!refresh);
+      alert("Personnage enregistré en favori !");
     } else {
       alert("veuillez-vous connecter pour enregistrer des favoris");
       setTimeout(() => {
