@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 const LogIn = ({ setUser, token }) => {
   const [username, setUsername] = useState("");
@@ -86,6 +87,7 @@ const LogIn = ({ setUser, token }) => {
           {wrongPassword && "veuillez rentrer deux fois le même mot de passe"}
         </div>
         <input type="submit" />
+        <Link to="/login"> Déjà un compte? Cliquez ici !</Link>
       </form>
     </main>
   );

@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Characters = ({ library, faStar, faHeart, token }) => {
   const [data, setData] = useState();
-  // const [pic, setPic] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const [characters, setCharacters] = useState("");
@@ -13,6 +12,7 @@ const Characters = ({ library, faStar, faHeart, token }) => {
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(100);
+  const [refresh, setRefresh] = useState(false);
 
   const navigate = useNavigate();
 
@@ -40,7 +40,7 @@ const Characters = ({ library, faStar, faHeart, token }) => {
     } catch (error) {
       console.log(error.message);
     }
-  }, [characters, page, limit]);
+  }, [characters, page, limit, refresh]);
 
   const registerFav = async (favorite) => {
     try {
@@ -70,9 +70,9 @@ const Characters = ({ library, faStar, faHeart, token }) => {
   const handleCharacters = (text) => {
     let matches = [];
     if (text.length > 0) {
-      matches = data.results.filter((heroes) => {
+      matches = data.results.filter((charac) => {
         const regex = new RegExp(`${text}`, "gi");
-        return heroes.name.match(regex);
+        return charac.name.match(regex);
       });
     }
     setSuggest(matches);
@@ -91,11 +91,16 @@ const Characters = ({ library, faStar, faHeart, token }) => {
   };
   const handleFavorite = (item) => {
     if (token) {
+      item.liked = true;
       registerFav(item);
+      setRefresh(!refresh);
     } else {
       alert("veuillez-vous connecter pour enregistrer des favoris");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+      alert("veuillez-vous connecter pour enregistrer des favoris");
     }
-    // console.log(item._id);
   };
 
   return isLoading ? (
@@ -145,6 +150,8 @@ const Characters = ({ library, faStar, faHeart, token }) => {
       </div>
       <main className="container">
         {data?.results.map((item) => {
+          item.liked = false;
+          // console.log(item);
           return (
             // <Link to={`/comics/${item._id}`}>
             <div
@@ -161,7 +168,7 @@ const Characters = ({ library, faStar, faHeart, token }) => {
                 />
                 <FontAwesomeIcon
                   icon="star"
-                  className="iconStar"
+                  className={item.liked ? "starIcon" : "iconStar"}
                   onClick={() => handleFavorite(item)}
                 />
               </div>

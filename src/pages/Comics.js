@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router";
 
 const Comics = ({ token, library, faStar, faHeart }) => {
   const [data, setData] = useState();
@@ -9,6 +10,8 @@ const Comics = ({ token, library, faStar, faHeart }) => {
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(100);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,7 +52,6 @@ const Comics = ({ token, library, faStar, faHeart }) => {
         }
       );
       console.log(resp.data);
-      // console.log("this was registered ===>", resp.data);
     } catch (error) {
       console.log(error.message);
     }
@@ -63,12 +65,13 @@ const Comics = ({ token, library, faStar, faHeart }) => {
       registerFav(item);
     } else {
       alert("veuillez-vous connecter pour enregistrer des favoris");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
     }
-    // console.log(item._id);
   };
 
   const maxPage = Math.round(data?.count / limit);
-  //   console.log(maxPage);
 
   const handleComics = (text) => {
     let matches = [];

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 const LogIn = ({ setUser, token }) => {
   const [email, setEmail] = useState("");
@@ -59,6 +60,7 @@ const LogIn = ({ setUser, token }) => {
         />
         <div className="error">{error}</div>
         <input type="submit" />
+        <Link to="/signup"> Pas encore de compte? Cliquez ici !</Link>
       </form>
     </main>
   );
