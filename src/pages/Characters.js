@@ -26,9 +26,12 @@ const Characters = ({ library, faStar, faHeart, token }) => {
       params.limit = limit;
 
       const fetchData = async () => {
-        const response = await axios.get("http://localhost:4000/characters", {
-          params: params,
-        });
+        const response = await axios.get(
+          "https://my-api-marvel.herokuapp.com/characters",
+          {
+            params: params,
+          }
+        );
         setData(response.data);
         setIsLoading(false);
       };
@@ -42,7 +45,7 @@ const Characters = ({ library, faStar, faHeart, token }) => {
   const registerFav = async (favorite) => {
     try {
       const resp = await axios.post(
-        "http://localhost:4000/favorite/character",
+        "https://my-api-marvel.herokuapp.com/favorite/character",
         {
           favorite,
         },

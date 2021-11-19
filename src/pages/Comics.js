@@ -21,9 +21,12 @@ const Comics = ({ token, library, faStar, faHeart }) => {
         params.limit = limit;
 
         // const resp = await axios.get(`http://localhost:4000/comics`);
-        const resp = await axios.get(`http://localhost:4000/comics`, {
-          params: params,
-        });
+        const resp = await axios.get(
+          `https://my-api-marvel.herokuapp.com/comics`,
+          {
+            params: params,
+          }
+        );
         setData(resp.data);
       } catch (error) {
         console.log(error.message);
@@ -35,7 +38,7 @@ const Comics = ({ token, library, faStar, faHeart }) => {
   const registerFav = async (favorite) => {
     try {
       const resp = await axios.post(
-        "http://localhost:4000/favorite/comic",
+        "https://my-api-marvel.herokuapp.com/favorite/comic",
         {
           favorite,
         },

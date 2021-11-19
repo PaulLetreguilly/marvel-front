@@ -12,7 +12,7 @@ const Favorite = ({ token }) => {
       try {
         if (character) {
           const response = await axios.get(
-            "http://localhost:4000/favorite/character",
+            "https://my-api-marvel.herokuapp.com/favorite/character",
             {
               headers: {
                 authorization: `Bearer ${token}`,
@@ -24,7 +24,7 @@ const Favorite = ({ token }) => {
           setData(response.data);
         } else {
           const response = await axios.get(
-            "http://localhost:4000/favorite/comic",
+            "https://my-api-marvel.herokuapp.com/favorite/comic",
             {
               headers: {
                 authorization: `Bearer ${token}`,
@@ -45,7 +45,7 @@ const Favorite = ({ token }) => {
   const FavDelete = async (idToDelete) => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/character/delete",
+        "https://my-api-marvel.herokuapp.com/character/delete",
         { id: idToDelete }
       );
       setRefresh(!refresh);
@@ -56,9 +56,12 @@ const Favorite = ({ token }) => {
   };
   const ComicDelete = async (idToDelete) => {
     try {
-      const response = await axios.post("http://localhost:4000/comic/delete", {
-        id: idToDelete,
-      });
+      const response = await axios.post(
+        "https://my-api-marvel.herokuapp.com/comic/delete",
+        {
+          id: idToDelete,
+        }
+      );
       setRefresh(!refresh);
       console.log(response.data);
     } catch (error) {

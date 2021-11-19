@@ -12,10 +12,13 @@ const LogIn = ({ setUser, token }) => {
   const handleSubmit = async (event) => {
     try {
       event.preventDefault();
-      const response = await axios.post("http://localhost:4000/login", {
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        "https://my-api-marvel.herokuapp.com/login",
+        {
+          email: email,
+          password: password,
+        }
+      );
       // console.log(response.data);
       if (response.data?.token) {
         setUser(response.data.token);
