@@ -35,6 +35,7 @@ const Favorite = ({ token }) => {
           // console.log(response.data);
           setData(response.data);
         }
+        console.log(data);
       } catch (error) {
         console.log(error.message);
       }
@@ -49,7 +50,7 @@ const Favorite = ({ token }) => {
         { id: idToDelete }
       );
       setRefresh(!refresh);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.log();
     }
@@ -63,7 +64,7 @@ const Favorite = ({ token }) => {
         }
       );
       setRefresh(!refresh);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.log();
     }

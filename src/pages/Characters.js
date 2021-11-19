@@ -13,6 +13,7 @@ const Characters = ({ library, faStar, faHeart, token }) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(100);
   const [refresh, setRefresh] = useState(false);
+  const [checkChar, setCheckChar] = useState();
 
   const navigate = useNavigate();
 
@@ -40,7 +41,32 @@ const Characters = ({ library, faStar, faHeart, token }) => {
     } catch (error) {
       console.log(error.message);
     }
-  }, [characters, page, limit, refresh]);
+  }, [characters, page, limit, refresh, checkChar]);
+
+  const checkFavorite = async (item) => {
+    try {
+      const response = await axios.get(
+        "https://my-api-marvel.herokuapp.com/favorite/character",
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const search = response.data.filter(
+        (elem) => elem.favorite.name === item.name
+      );
+      if (search) {
+        alert("Personnages déjà en favoris");
+      } else {
+        setCheckChar(response.data);
+        registerFav(item);
+        alert("Personnage enregistré en favori !");
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   const registerFav = async (favorite) => {
     try {
@@ -92,9 +118,7 @@ const Characters = ({ library, faStar, faHeart, token }) => {
   const handleFavorite = (item) => {
     if (token) {
       // item.liked = true;
-      registerFav(item);
-      // setRefresh(!refresh);
-      alert("Personnage enregistré en favori !");
+      checkFavorite(item);
     } else {
       alert("veuillez-vous connecter pour enregistrer des favoris");
       setTimeout(() => {
