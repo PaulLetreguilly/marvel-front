@@ -124,7 +124,6 @@ const Characters = ({ library, faStar, faHeart, token }) => {
       setTimeout(() => {
         navigate("/login");
       }, 1000);
-      alert("veuillez-vous connecter pour enregistrer des favoris");
     }
   };
 
