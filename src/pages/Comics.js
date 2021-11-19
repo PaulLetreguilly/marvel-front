@@ -10,6 +10,7 @@ const Comics = ({ token, library, faStar, faHeart }) => {
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(100);
+  const [checkComic, setCheckComic] = useState();
 
   const navigate = useNavigate();
 
@@ -36,7 +37,7 @@ const Comics = ({ token, library, faStar, faHeart }) => {
       }
     };
     fetchData();
-  }, [comics, page, limit]);
+  }, [comics, page, limit, checkComic]);
 
   const registerFav = async (favorite) => {
     try {
@@ -60,10 +61,35 @@ const Comics = ({ token, library, faStar, faHeart }) => {
     setComics(text);
   };
 
+  const checkFavorite = async (item) => {
+    try {
+      const response = await axios.get(
+        "https://my-api-marvel.herokuapp.com/favorite/comic",
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(item.title);
+      const research = response.data.filter(
+        (elem) => elem.favorite.title === item.title
+      );
+      if (research.length > 0) {
+        alert("Comics déjà en favoris");
+      } else {
+        setCheckComic(response.data);
+        registerFav(item);
+        alert("Comics enregistré en favori !");
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   const handleFavorite = (item) => {
     if (token) {
-      registerFav(item);
-      alert("Comics enregistré en favori !");
+      checkFavorite(item);
     } else {
       alert("veuillez-vous connecter pour enregistrer des favoris");
       setTimeout(() => {
