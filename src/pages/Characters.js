@@ -53,14 +53,16 @@ const Characters = ({ library, faStar, faHeart, token }) => {
           },
         }
       );
+      console.log(response.data);
       const search = response.data.filter(
         (elem) => elem.favorite.name === item.name
       );
-      if (search) {
+      if (search.length > 0) {
         alert("Personnages déjà en favoris");
       } else {
         setCheckChar(response.data);
         registerFav(item);
+        modifyFav(item);
         alert("Personnage enregistré en favori !");
       }
     } catch (error) {
@@ -85,6 +87,16 @@ const Characters = ({ library, faStar, faHeart, token }) => {
     } catch (error) {
       console.log(error.message);
     }
+  };
+
+  const modifyFav = async (character) => {
+    try {
+      const resp = await axios.post(
+        "https://my-api-marvel.herokuapp.com/update/character",
+        { id: character._id, liked: character.liked }
+      );
+      console.log(resp.data);
+    } catch (error) {}
   };
 
   const maxPage = Math.round(data?.count / limit);
@@ -117,7 +129,8 @@ const Characters = ({ library, faStar, faHeart, token }) => {
   };
   const handleFavorite = (item) => {
     if (token) {
-      // item.liked = true;
+      // console.log(item);
+      // console.log("hey", item);
       checkFavorite(item);
     } else {
       alert("veuillez-vous connecter pour enregistrer des favoris");
