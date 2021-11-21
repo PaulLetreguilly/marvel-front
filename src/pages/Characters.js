@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Favourite from "../components/Favourite";
 
 const Characters = ({ library, faStar, faHeart, token }) => {
   const [data, setData] = useState();
@@ -12,92 +12,34 @@ const Characters = ({ library, faStar, faHeart, token }) => {
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(100);
-  const [refresh, setRefresh] = useState(false);
-  const [checkChar, setCheckChar] = useState();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    try {
-      const params = {};
-      if (characters) {
-        params.name = characters;
-      }
-      params.page = page;
-      params.limit = limit;
+    const fetchData = async () => {
+      try {
+        const params = {};
+        if (characters) {
+          params.name = characters;
+        }
+        params.page = page;
+        params.limit = limit;
 
-      const fetchData = async () => {
         const response = await axios.get(
-          "https://my-api-marvel.herokuapp.com/characters",
+          // "https://my-api-marvel.herokuapp.com/characters",
+          "http://localhost:4000/characters",
           {
             params: params,
           }
         );
         setData(response.data);
         setIsLoading(false);
-      };
-      fetchData();
-      // console.log("my params :", params);
-    } catch (error) {
-      console.log(error.message);
-    }
-  }, [characters, page, limit, refresh, checkChar]);
-
-  const checkFavorite = async (item) => {
-    try {
-      const response = await axios.get(
-        "https://my-api-marvel.herokuapp.com/favorite/character",
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(response.data);
-      const search = response.data.filter(
-        (elem) => elem.favorite.name === item.name
-      );
-      if (search.length > 0) {
-        alert("Personnages déjà en favoris");
-      } else {
-        setCheckChar(response.data);
-        registerFav(item);
-        modifyFav(item);
-        alert("Personnage enregistré en favori !");
+      } catch (error) {
+        console.log(error.message);
       }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const registerFav = async (favorite) => {
-    try {
-      const resp = await axios.post(
-        "https://my-api-marvel.herokuapp.com/favorite/character",
-        {
-          favorite,
-        },
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(resp.data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const modifyFav = async (character) => {
-    try {
-      const resp = await axios.post(
-        "https://my-api-marvel.herokuapp.com/update/character",
-        { id: character._id, liked: character.liked }
-      );
-      console.log(resp.data);
-    } catch (error) {}
-  };
+    };
+    fetchData();
+  }, [characters, page, limit]);
 
   const maxPage = Math.round(data?.count / limit);
 
@@ -127,75 +69,71 @@ const Characters = ({ library, faStar, faHeart, token }) => {
       setPage(page + 1);
     }
   };
-  const handleFavorite = (item) => {
-    if (token) {
-      // console.log(item);
-      // console.log("hey", item);
-      checkFavorite(item);
-    } else {
-      alert("veuillez-vous connecter pour enregistrer des favoris");
-      setTimeout(() => {
-        navigate("/login");
-      }, 1000);
-    }
-  };
 
   return isLoading ? (
-    <div>Loading ...</div>
+    <div className="body-load">
+      <div className="loading">Loading ...</div>
+    </div>
   ) : (
     <section className="body">
       <div className="search">
-        <input
-          type="text"
-          className="searchBar"
-          placeholder="Recherche de personnage..."
-          onChange={(event) => handleCharacters(event.target.value)}
-          value={characters}
-          onBlur={() => {
-            setTimeout(() => {
-              setSuggest([]);
-            }, 200);
-          }}
-        />
-        <div className="suggestions contain-search">
-          {suggest &&
-            suggest.map((suggestion, i) => {
-              return (
-                <div
-                  key={i}
-                  className="suggestion"
-                  onClick={() => handleSuggestion(suggestion.name)}
-                >
-                  {suggestion.name}
-                </div>
-              );
-            })}
-        </div>
-        <span style={{ color: "red" }}>{data?.count} personnages trouvés</span>
-        <span style={{ color: "red" }}>
-          <button onClick={handleMinus}>-</button>page {page}
-          <button onClick={handlePlus}>+</button>
-        </span>
-        <span style={{ color: "red" }}>
-          Combien d'articles voulez-vous afficher ?{" "}
+        <div className="search-left">
+          {" "}
           <input
-            type="number"
-            placeholder="100"
-            onChange={(event) => setLimit(event.target.value)}
+            type="text"
+            className="searchBar"
+            placeholder="Recherche de personnage..."
+            onChange={(event) => handleCharacters(event.target.value)}
+            value={characters}
+            onBlur={() => {
+              setTimeout(() => {
+                setSuggest([]);
+              }, 200);
+            }}
           />
-        </span>
+          <div className="suggestions contain-search">
+            {suggest &&
+              suggest.map((suggestion, i) => {
+                return (
+                  <div
+                    key={i}
+                    className="suggestion"
+                    onClick={() => handleSuggestion(suggestion.name)}
+                  >
+                    {suggestion.name}
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+        <div className="search-right">
+          <span style={{ color: "white" }}>
+            <span className="count">{data?.count}</span> personnages trouvés
+          </span>
+          <span style={{ color: "white" }}>
+            <button
+              onClick={handleMinus}
+              className={page > 1 ? null : "invisible"}
+            >
+              -
+            </button>
+            page {page}
+            <button onClick={handlePlus}>+</button>
+          </span>
+          <span style={{ color: "white" }}>
+            Combien d'articles voulez-vous afficher ?{" "}
+            <input
+              type="number"
+              placeholder="100"
+              onChange={(event) => setLimit(event.target.value)}
+            />
+          </span>
+        </div>
       </div>
       <main className="container">
         {data?.results.map((item) => {
-          item.liked = false;
-          // console.log(item);
           return (
-            // <Link to={`/comics/${item._id}`}>
-            <div
-              key={item._id}
-              className="char"
-              // onClick={() => navigate(`/comics/${item._id}`)}
-            >
+            <div key={item._id} className="char">
               <h3>{item.name}</h3>
               <div>
                 <img
@@ -203,15 +141,10 @@ const Characters = ({ library, faStar, faHeart, token }) => {
                   alt=""
                   onClick={() => navigate(`/comics/${item._id}`)}
                 />
-                <FontAwesomeIcon
-                  icon="star"
-                  className={item.liked ? "starIcon" : "iconStar"}
-                  onClick={() => handleFavorite(item)}
-                />
+                <Favourite item={item} token={token} text="character" />
               </div>
               <p>{item.description}</p>
             </div>
-            // </Link>
           );
         })}
       </main>

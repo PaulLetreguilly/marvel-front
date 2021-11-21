@@ -14,20 +14,19 @@ const LogIn = ({ setUser, token }) => {
     try {
       event.preventDefault();
       const response = await axios.post(
-        "https://my-api-marvel.herokuapp.com/login",
+        // "https://my-api-marvel.herokuapp.com/login",
+        "http://localhost:4000/login",
         {
           email: email,
           password: password,
         }
       );
-      // console.log(response.data);
       if (response.data?.token) {
         setUser(response.data.token);
         navigate("/");
       }
     } catch (error) {
-      // console.log(error.message);
-      // console.log(error.response);
+      console.log(error.message);
       if (error.response?.status === 401) {
         setError("Mauvais email/mot de passe");
       }
@@ -43,7 +42,7 @@ const LogIn = ({ setUser, token }) => {
   };
 
   return (
-    <main>
+    <main className="body-log">
       <form className="form log" onSubmit={handleSubmit}>
         <h3>Se connecter</h3>
         <input
@@ -58,9 +57,12 @@ const LogIn = ({ setUser, token }) => {
           placeholder="password"
           onChange={handlePassword}
         />
-        <div className="error">{error}</div>
-        <input type="submit" />
-        <Link to="/signup"> Pas encore de compte? Cliquez ici !</Link>
+        <div className="wrongmessage">{error}</div>
+        <input type="submit" value="connexion" />
+        <Link to="/signup" className="white">
+          {" "}
+          Pas encore de compte? Cliquez ici !
+        </Link>
       </form>
     </main>
   );

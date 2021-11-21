@@ -10,12 +10,11 @@ const Character = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const resp = await axios.get(`http://localhost:4000/comics`);
         const resp = await axios.get(
-          `https://my-api-marvel.herokuapp.com/comics/${id}`
+          // `https://my-api-marvel.herokuapp.com/comics/${id}`
+          `http://localhost:4000/comics/${id}`
         );
         setData(resp.data);
-        // console.log(resp.data, "heya");
       } catch (error) {
         console.log(error.message);
       }
@@ -25,6 +24,7 @@ const Character = () => {
 
   return (
     <section className="charac-comics">
+      <div></div>
       {data?.comics.map((item) => {
         return (
           <div key={item._id} className="comics">

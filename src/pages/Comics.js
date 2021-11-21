@@ -1,18 +1,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router";
+import Favourite from "../components/Favourite";
 
 const Comics = ({ token, library, faStar, faHeart }) => {
   const [data, setData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+
   const [comics, setComics] = useState("");
   const [suggest, setSuggest] = useState([]);
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(100);
-  const [checkComic, setCheckComic] = useState();
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,78 +22,24 @@ const Comics = ({ token, library, faStar, faHeart }) => {
         params.page = page;
         params.limit = limit;
 
-        // const resp = await axios.get(`http://localhost:4000/comics`);
         const resp = await axios.get(
-          `https://my-api-marvel.herokuapp.com/comics`,
+          // `https://my-api-marvel.herokuapp.com/comics`,
+          "http://localhost:4000/comics",
           {
             params: params,
           }
         );
         setData(resp.data);
+        setIsLoading(false);
       } catch (error) {
         console.log(error.message);
       }
     };
     fetchData();
-  }, [comics, page, limit, checkComic]);
+  }, [comics, page, limit]);
 
-  const registerFav = async (favorite) => {
-    try {
-      const resp = await axios.post(
-        "https://my-api-marvel.herokuapp.com/favorite/comic",
-        {
-          favorite,
-        },
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(resp.data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
   const handleSuggestion = (text) => {
     setComics(text);
-  };
-
-  const checkFavorite = async (item) => {
-    try {
-      const response = await axios.get(
-        "https://my-api-marvel.herokuapp.com/favorite/comic",
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(item.title);
-      const research = response.data.filter(
-        (elem) => elem.favorite.title === item.title
-      );
-      if (research.length > 0) {
-        alert("Comics déjà en favoris");
-      } else {
-        setCheckComic(response.data);
-        registerFav(item);
-        alert("Comics enregistré en favori !");
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const handleFavorite = (item) => {
-    if (token) {
-      checkFavorite(item);
-    } else {
-      alert("veuillez-vous connecter pour enregistrer des favoris");
-      setTimeout(() => {
-        navigate("/login");
-      }, 1000);
-    }
   };
 
   const maxPage = Math.round(data?.count / limit);
@@ -123,48 +67,64 @@ const Comics = ({ token, library, faStar, faHeart }) => {
     }
   };
 
-  return (
+  return isLoading ? (
+    <div className="body-load">
+      <div className="loading">Loading ...</div>
+    </div>
+  ) : (
     <section className="body-comics">
       <div className="search">
-        <input
-          type="text"
-          className="searchBar"
-          placeholder="Recherche de comics..."
-          onChange={(event) => handleComics(event.target.value)}
-          onBlur={() => {
-            setTimeout(() => {
-              setSuggest([]);
-            }, 200);
-          }}
-          value={comics}
-        />
-        <div className="suggestions contain-search">
-          {suggest &&
-            suggest.map((suggestion, i) => {
-              return (
-                <div
-                  key={i}
-                  className="suggestion"
-                  onClick={() => handleSuggestion(suggestion.title)}
-                >
-                  {suggestion.title}
-                </div>
-              );
-            })}
-        </div>
-        <span style={{ color: "red" }}>{data?.count} comics trouvés</span>
-        <span>
-          <button onClick={handleMinus}>-</button>page {page}
-          <button onClick={handlePlus}>+</button>
-        </span>
-        <span style={{ color: "red" }}>
-          Combien d'articles voulez-vous afficher ?{" "}
+        <div className="search-left">
+          {" "}
           <input
-            type="number"
-            placeholder="100"
-            onChange={(event) => setLimit(event.target.value)}
+            type="text"
+            className="searchBar"
+            placeholder="Recherche de comics..."
+            onChange={(event) => handleComics(event.target.value)}
+            onBlur={() => {
+              setTimeout(() => {
+                setSuggest([]);
+              }, 200);
+            }}
+            value={comics}
           />
-        </span>
+          <div className="suggestions contain-search">
+            {suggest &&
+              suggest.map((suggestion, i) => {
+                return (
+                  <div
+                    key={i}
+                    className="suggestion"
+                    onClick={() => handleSuggestion(suggestion.title)}
+                  >
+                    {suggestion.title}
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+        <div className="search-right">
+          {" "}
+          <span style={{ color: "white" }}>{data?.count} comics trouvés</span>
+          <span style={{ color: "white" }}>
+            <button
+              onClick={handleMinus}
+              className={page > 1 ? null : "invisible"}
+            >
+              -
+            </button>
+            page {page}
+            <button onClick={handlePlus}>+</button>
+          </span>
+          <span style={{ color: "white" }}>
+            Combien d'articles voulez-vous afficher ?{" "}
+            <input
+              type="number"
+              placeholder="100"
+              onChange={(event) => setLimit(event.target.value)}
+            />
+          </span>
+        </div>
       </div>
       <div className="container">
         {data?.results.map((item) => {
@@ -176,11 +136,7 @@ const Comics = ({ token, library, faStar, faHeart }) => {
                 alt=""
               />
               <p>{item.description}</p>
-              <FontAwesomeIcon
-                icon="heart"
-                className="iconHeart"
-                onClick={() => handleFavorite(item)}
-              />
+              <Favourite item={item} token={token} text="comic" />
             </div>
           );
         })}

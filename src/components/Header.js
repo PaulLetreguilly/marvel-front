@@ -38,7 +38,6 @@ const Header = ({ token, setUser }) => {
         ) : (
           <div className="log-buttons">
             <span onClick={() => navigate("/signup")}>S'inscrire</span>
-
             <span onClick={() => navigate("/login")}>connexion</span>
           </div>
         )}

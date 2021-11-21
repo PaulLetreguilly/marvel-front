@@ -18,7 +18,8 @@ const LogIn = ({ setUser, token }) => {
       event.preventDefault();
       if (password === confirmPassword) {
         const response = await axios.post(
-          "https://my-api-marvel.herokuapp.com/signup",
+          // "https://my-api-marvel.herokuapp.com/signup",
+          "http://localhost:4000/signup",
           {
             username: username,
             email: email,
@@ -26,7 +27,6 @@ const LogIn = ({ setUser, token }) => {
           }
         );
         setWrongPassword(false);
-        // console.log(response.data);
         if (response.data?.token) {
           setUser(response.data.token);
           navigate("/");
@@ -35,10 +35,11 @@ const LogIn = ({ setUser, token }) => {
         setWrongPassword(true);
       }
     } catch (error) {
-      //   console.log(error.message);
-      //   console.log(error.response);
+      console.log(error.message);
       if (error.response?.status === 409) {
         setError("Cet email n'est pas disponible");
+      } else if (error.response?.status === 400) {
+        setError("Il manque des informations");
       }
     }
   };
@@ -59,8 +60,7 @@ const LogIn = ({ setUser, token }) => {
   };
 
   return (
-    <main>
-      {/* <div>S'inscrire (On progress ...)</div> */}
+    <main className="body-log">
       <form className="form sign" onSubmit={handleSubmit}>
         <h3>Se connecter</h3>
         <input type="text" placeholder="username" onChange={handleUsername} />
@@ -70,7 +70,6 @@ const LogIn = ({ setUser, token }) => {
           onChange={handleMail}
           className={error ? "wrongmessage" : null}
         />
-        <div className="error">{error}</div>
         <input
           className={wrongPassword ? "wrong" : "norm"}
           type="password"
@@ -86,8 +85,12 @@ const LogIn = ({ setUser, token }) => {
         <div className="wrongmessage">
           {wrongPassword && "veuillez rentrer deux fois le même mot de passe"}
         </div>
+        <div className="wrongmessage">{error}</div>
         <input type="submit" />
-        <Link to="/login"> Déjà un compte? Cliquez ici !</Link>
+        <Link to="/login" className="white">
+          {" "}
+          Déjà un compte? Cliquez ici !
+        </Link>
       </form>
     </main>
   );

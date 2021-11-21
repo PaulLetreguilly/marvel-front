@@ -4,6 +4,8 @@ import axios from "axios";
 
 const Favorite = ({ token }) => {
   const [data, setData] = useState();
+  const [isLoading, setisLoading] = useState(true);
+
   const [refresh, setRefresh] = useState(false);
   const [character, setCharacter] = useState(true);
 
@@ -12,30 +14,30 @@ const Favorite = ({ token }) => {
       try {
         if (character) {
           const response = await axios.get(
-            "https://my-api-marvel.herokuapp.com/favorite/character",
+            // "https://my-api-marvel.herokuapp.com/favorite/character",
+            "http://localhost:4000/favorite/character",
             {
               headers: {
                 authorization: `Bearer ${token}`,
               },
             }
           );
-          // console.log(token);
-          // console.log(response.data);
           setData(response.data);
+          setisLoading(false);
         } else {
           const response = await axios.get(
-            "https://my-api-marvel.herokuapp.com/favorite/comic",
+            // "https://my-api-marvel.herokuapp.com/favorite/comic",
+            "http://localhost:4000/favorite/comic",
             {
               headers: {
                 authorization: `Bearer ${token}`,
               },
             }
           );
-          // console.log(token);
-          // console.log(response.data);
           setData(response.data);
+          setisLoading(false);
         }
-        console.log(data);
+        console.log();
       } catch (error) {
         console.log(error.message);
       }
@@ -46,36 +48,50 @@ const Favorite = ({ token }) => {
   const FavDelete = async (idToDelete) => {
     try {
       const response = await axios.post(
-        "https://my-api-marvel.herokuapp.com/character/delete",
+        // "https://my-api-marvel.herokuapp.com/character/delete",
+        "http://localhost:4000/character/delete",
         { id: idToDelete }
       );
       setRefresh(!refresh);
-      // console.log(response.data);
     } catch (error) {
-      console.log();
+      console.log(error.message);
     }
   };
   const ComicDelete = async (idToDelete) => {
     try {
       const response = await axios.post(
-        "https://my-api-marvel.herokuapp.com/comic/delete",
+        // "https://my-api-marvel.herokuapp.com/comic/delete",
+        "http://localhost:4000/comic/delete",
         {
           id: idToDelete,
         }
       );
       setRefresh(!refresh);
-      // console.log(response.data);
     } catch (error) {
       console.log();
     }
   };
 
-  return token && character ? (
-    <section>
+  return isLoading ? (
+    <div className="body-load">
+      <div className="loading">Loading ...</div>
+    </div>
+  ) : token && character ? (
+    <section className="body-fav">
       <h2 className="yourFavorites"> Vos favoris :</h2>
       <div className="choice">
-        <span onClick={() => setCharacter(true)}>Personnages</span>
-        <span onClick={() => setCharacter(false)}>Comics</span>
+        <span
+          onClick={() => setCharacter(true)}
+          className={character ? "switchOn" : "switchOff"}
+        >
+          Personnages
+        </span>
+        <span
+          onClick={() => setCharacter(false)}
+          className={character ? "switchOff" : "switchOn"}
+        >
+          Comics
+        </span>
       </div>
       <div className="fav-charac">
         {data?.map((elem) => {
@@ -85,9 +101,9 @@ const Favorite = ({ token }) => {
 
               <img
                 src={
-                  elem.favorite.thumbnail.path +
+                  elem.favorite.thumbnail?.path +
                   "." +
-                  elem.favorite.thumbnail.extension
+                  elem.favorite.thumbnail?.extension
                 }
                 alt=""
               />
@@ -100,11 +116,21 @@ const Favorite = ({ token }) => {
       </div>
     </section>
   ) : token && !character ? (
-    <section>
+    <section className="body-fav">
       <h2 className="yourFavorites"> Vos favoris :</h2>
       <div className="choice">
-        <span onClick={() => setCharacter(true)}>Personnages</span>
-        <span onClick={() => setCharacter(false)}>Comics</span>
+        <span
+          onClick={() => setCharacter(true)}
+          className={character ? "switchOn" : "switchOff"}
+        >
+          Personnages
+        </span>
+        <span
+          onClick={() => setCharacter(false)}
+          className={character ? "switchOff" : "switchOn"}
+        >
+          Comics
+        </span>
       </div>
       <div className="fav-charac">
         {data?.map((elem) => {
@@ -129,6 +155,7 @@ const Favorite = ({ token }) => {
             </div>
           );
         })}
+        <div className="someSpace"></div>
       </div>
     </section>
   ) : (

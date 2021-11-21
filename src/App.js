@@ -5,6 +5,7 @@ import Comics from "./pages/Comics";
 import Characters from "./pages/Characters";
 import Character from "./pages/Character";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import LogIn from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
 import Favorite from "./pages/Favorite";
@@ -62,6 +63,7 @@ function App() {
           element={<SignUp token={token} setUser={setUser} />}
         />
       </Routes>
+      <Footer />
     </Router>
   );
 }
