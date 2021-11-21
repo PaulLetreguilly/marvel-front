@@ -11,8 +11,8 @@ const Character = () => {
     const fetchData = async () => {
       try {
         const resp = await axios.get(
-          // `https://my-api-marvel.herokuapp.com/comics/${id}`
-          `http://localhost:4000/comics/${id}`
+          `https://my-api-marvel.herokuapp.com/comics/${id}`
+          // `http://localhost:4000/comics/${id}`
         );
         setData(resp.data);
       } catch (error) {

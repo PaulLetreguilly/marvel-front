@@ -14,8 +14,8 @@ const LogIn = ({ setUser, token }) => {
     try {
       event.preventDefault();
       const response = await axios.post(
-        // "https://my-api-marvel.herokuapp.com/login",
-        "http://localhost:4000/login",
+        "https://my-api-marvel.herokuapp.com/login",
+        // "http://localhost:4000/login",
         {
           email: email,
           password: password,

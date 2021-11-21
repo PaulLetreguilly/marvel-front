@@ -10,6 +10,7 @@ const Favourite = ({ item, token, text }) => {
 
   const navigate = useNavigate();
   const list = [];
+  // const tab = localStorage.getItem("Favorites")
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,13 +43,14 @@ const Favourite = ({ item, token, text }) => {
   const handleClick = async (item) => {
     if (token) {
       if (item.name) {
+        // localStorage.getItem() ? "" : ""
         if (list.indexOf(item.name) === -1) {
           list.push(item.name);
           console.log(list);
           item.liked = true;
           const resp = await axios.post(
-            // `https://my-api-marvel.herokuapp.com/favorite/${text}`,
-            `http://localhost:4000/favorite/${text}`,
+            `https://my-api-marvel.herokuapp.com/favorite/${text}`,
+            // `http://localhost:4000/favorite/${text}`,
             { item },
             {
               headers: {
