@@ -1,9 +1,16 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
-// import { useState } from "react";
 
 const Header = ({ token, setUser }) => {
   const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (token) {
+      navigate("/favorite");
+    } else {
+      alert("Veuillez-vous connecter pour accéder aux favoris");
+    }
+  };
 
   return (
     <header>
@@ -21,7 +28,7 @@ const Header = ({ token, setUser }) => {
 
         <span onClick={() => navigate("/comics")}>Comics</span>
 
-        <span onClick={() => navigate("/favorite")}>Favoris</span>
+        <span onClick={() => handleClick()}>Favoris</span>
       </div>
       <div className="header-right">
         {token ? (

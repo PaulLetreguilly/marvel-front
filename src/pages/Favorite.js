@@ -1,4 +1,4 @@
-import { Navigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -8,6 +8,8 @@ const Favorite = ({ token }) => {
 
   const [refresh, setRefresh] = useState(false);
   const [character, setCharacter] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFav = async () => {
@@ -160,6 +162,7 @@ const Favorite = ({ token }) => {
     </section>
   ) : (
     <Navigate to="/login" />
+    // navigate("/login")
   );
 };
 
