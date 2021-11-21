@@ -49,8 +49,8 @@ const Favourite = ({ item, token, text }) => {
           console.log(list);
           item.liked = true;
           const resp = await axios.post(
-            `https://my-api-marvel.herokuapp.com/favorite/${text}`,
-            // `http://localhost:4000/favorite/${text}`,
+            // `https://my-api-marvel.herokuapp.com/favorite/${text}`,
+            `http://localhost:4000/favorite/${text}`,
             { item },
             {
               headers: {
