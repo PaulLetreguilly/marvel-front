@@ -24,9 +24,9 @@ header {
   margin-left: 10vw;
 }
 .logo {
-  width: 150px;
+  width: 25vh;
   margin: 5px 20px;
-  border-radius: 7px;
+  border-radius: 3%;
 }
 
 /* mid-header */
@@ -98,6 +98,12 @@ header Link span {
 }
 .invisible:hover {
   cursor: inherit !important;
+}
+.option1 {
+  display: inherit;
+}
+.option2 {
+  display: none;
 }
 .search-right span {
   margin: 0 2vw;
@@ -462,4 +468,49 @@ footer div a {
   text-decoration: none;
   color: gold;
   font-weight: bold;
+}
+
+/* ----------------- MEDIA QUERIES ---------------- */
+
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .search-right span {
+    font-size: 14px;
+  }
+  .option1 {
+    display: none;
+  }
+  .option2 {
+    display: inherit;
+  }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+  .search-right span {
+    font-size: 12px;
+  }
+  .option1 {
+    display: none;
+  }
+  .option2 {
+    display: inherit;
+  }
+}
+@media (min-width: 426px) and (max-width: 768px) {
+  .logo {
+    margin: 2px 5px;
+  }
+  .search-right span {
+    font-size: 12px;
+  }
+  .search-right .option1 {
+    display: none;
+  }
+  .search-right .option2 {
+    display: inherit;
+  }
+}
+
+@media (max-width: 425px) {
+  header {
+    overflow: scroll;
+  }
 }

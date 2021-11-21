@@ -120,8 +120,16 @@ const Characters = ({ library, faStar, faHeart, token }) => {
             page {page}
             <button onClick={handlePlus}>+</button>
           </span>
-          <span style={{ color: "white" }}>
+          <span style={{ color: "white" }} className="option1">
             Combien d'articles voulez-vous afficher ?{" "}
+            <input
+              type="number"
+              placeholder="100"
+              onChange={(event) => setLimit(event.target.value)}
+            />
+          </span>
+          <span style={{ color: "white" }} className="option2">
+            nombres d'articles :
             <input
               type="number"
               placeholder="100"
