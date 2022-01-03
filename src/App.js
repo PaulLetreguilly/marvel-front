@@ -4,11 +4,11 @@ import { useState } from "react";
 import Comics from "./pages/Comics";
 import Characters from "./pages/Characters";
 import Character from "./pages/Character";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 import LogIn from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
 import Favorite from "./pages/Favorite";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 import Cookies from "js-cookie";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faStar, faHeart } from "@fortawesome/free-solid-svg-icons";
@@ -25,6 +25,9 @@ function App() {
     }
     setToken(token);
   };
+
+  const url = "https://my-api-marvel.herokuapp.com";
+  // const url = "http://localhost:4000"
 
   return (
     <Router>

@@ -23,8 +23,8 @@ const Comics = ({ token, library, faStar, faHeart }) => {
         params.limit = limit;
 
         const resp = await axios.get(
-          `https://my-api-marvel.herokuapp.com/comics`,
-          // "http://localhost:4000/comics",
+          // `https://my-api-marvel.herokuapp.com/comics`,
+          "http://localhost:4000/comics",
           {
             params: params,
           }

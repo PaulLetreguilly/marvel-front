@@ -18,8 +18,8 @@ const LogIn = ({ setUser, token }) => {
       event.preventDefault();
       if (password === confirmPassword) {
         const response = await axios.post(
-          "https://my-api-marvel.herokuapp.com/signup",
-          // "http://localhost:4000/signup",
+          // "https://my-api-marvel.herokuapp.com/signup",
+          "http://localhost:4000/signup",
           {
             username: username,
             email: email,

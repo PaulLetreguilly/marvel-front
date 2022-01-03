@@ -26,8 +26,8 @@ const Characters = ({ library, faStar, faHeart, token }) => {
         params.limit = limit;
 
         const response = await axios.get(
-          "https://my-api-marvel.herokuapp.com/characters",
-          // "http://localhost:4000/characters",
+          // "https://my-api-marvel.herokuapp.com/characters",
+          "http://localhost:4000/characters",
           {
             params: params,
           }
@@ -50,11 +50,17 @@ const Characters = ({ library, faStar, faHeart, token }) => {
   const handleCharacters = (text) => {
     let matches = [];
     if (text.length > 0) {
-      matches = data.results.filter((charac) => {
-        const regex = new RegExp(`${text}`, "gi");
-        return charac.name.match(regex);
+      // matches = data.results.filter((charac) => {
+      //   const regex = new RegExp(`${text}`, "gi");
+      //   return charac.name.match(regex);
+      // });
+      data.results.map((elem, i) => {
+        if (elem.name.toLowerCase().indexOf(text.toLowerCase()) !== -1) {
+          matches.push(elem);
+        }
       });
     }
+    console.log(matches);
     setSuggest(matches);
     setCharacters(text);
   };
